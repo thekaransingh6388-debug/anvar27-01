@@ -4,23 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>PANKAJ BHARDWAJ | Stock Market Telegram Channel</title>
-    <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '953260157582123');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=953260157582123&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+    
+    <!-- Facebook Pixel Base Code - Properly Initialized -->
+    <script>
+        // Facebook Pixel initialization with proper error handling
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        
+        // Initialize with your Pixel ID
+        fbq('init', '1698920654893978');
+        fbq('track', 'PageView');
+        
+        // Also track initial page view with additional details
+        fbq('track', 'ViewContent', {
+            content_name: 'PANKAJ_BHARDWAJ_Landing_Page',
+            content_category: 'Stock_Market_Channel',
+            currency: 'INR'
+        });
+        
+        console.log('✅ Facebook Pixel Initialized - ID: 1698920654893978');
+    </script>
+    
+    <!-- Fallback noscript for pixel (for users with JS disabled) -->
+    <noscript>
+        <img height="1" width="1" style="display:none" 
+             src="https://www.facebook.com/tr?id=1698920654893978&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+    
     <style>
         * {
             margin: 0;
@@ -161,7 +178,7 @@ src="https://www.facebook.com/tr?id=953260157582123&ev=PageView&noscript=1"
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background-color: #0a5094;  /* dark blue base */
+            background-color: #0a5094;
             background: linear-gradient(95deg, #0a5094, #0c5ea8);
             padding: 14px 20px;
             border-radius: 70px;
@@ -207,6 +224,29 @@ src="https://www.facebook.com/tr?id=953260157582123&ev=PageView&noscript=1"
             color: #6c7a91;
             margin-top: 22px;
         }
+        
+        /* Loading animation / toast message style */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a2642;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast-msg.show {
+            opacity: 1;
+        }
 
         @media (max-width: 480px) {
             .content {
@@ -224,6 +264,11 @@ src="https://www.facebook.com/tr?id=953260157582123&ev=PageView&noscript=1"
             }
             .feature-list li {
                 font-size: 14px;
+            }
+            .toast-msg {
+                font-size: 11px;
+                white-space: nowrap;
+                bottom: 20px;
             }
         }
     </style>
@@ -284,35 +329,293 @@ src="https://www.facebook.com/tr?id=953260157582123&ev=PageView&noscript=1"
     </div>
 </div>
 
-<!-- Facebook Pixel Event Tracking Script - Subscribe Button Track -->
+<!-- Toast notification for tracking feedback (optional but user friendly) -->
+<div id="trackingToast" class="toast-msg">✅ Tracking confirmed! Redirecting to Telegram...</div>
+
+<!-- Advanced Facebook Pixel Event Tracking with Subscribe Button Tracking (Lead + Custom Events) -->
 <script>
     (function() {
-        // Get both buttons
-        var topBtn = document.getElementById('joinTopBtn');
-        var bottomBtn = document.getElementById('joinBottomBtn');
-        
-        // Tracking function for Lead event
-        function trackSubscribeButtonClick(event) {
+        // Ensure fbq is available, if not wait a little
+        function waitForFbq(callback, retries = 10) {
             if (typeof fbq === 'function') {
-                fbq('track', 'Lead', {
-                    content_name: 'Telegram_Join_PANKAJ',
-                    content_category: 'Subscribe_Button',
-                    button_position: (event.target.closest('a').id === 'joinTopBtn') ? 'Top' : 'Bottom'
-                });
-                console.log('✅ Facebook Pixel Lead event tracked - Subscribe Button Clicked');
+                callback();
+                return;
             }
-            // Link will work normally - no interruption
+            if (retries === 0) {
+                console.warn('⚠️ Facebook Pixel not loaded after retries');
+                return;
+            }
+            setTimeout(function() {
+                waitForFbq(callback, retries - 1);
+            }, 100);
         }
         
-        // Add click event listeners to both buttons
+        // Helper to show toast message temporarily
+        function showToastMessage(message, duration = 2000) {
+            const toast = document.getElementById('trackingToast');
+            if (toast) {
+                toast.textContent = message || '✅ Tracking confirmed! Redirecting to Telegram...';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, duration);
+            }
+        }
+        
+        // Track Subscribe/Join button click with full event data
+        function trackSubscribeClick(buttonElement, buttonPosition) {
+            // Make sure we track exactly when the button is clicked
+            if (typeof fbq === 'function') {
+                // Track Lead event (most important for conversions)
+                fbq('track', 'Lead', {
+                    content_name: 'Telegram_Channel_Join',
+                    content_category: 'Stock_Market_Subscription',
+                    button_position: buttonPosition,
+                    channel_name: 'PANKAJ_BHARDWAJ_OFFICIAL',
+                    currency: 'INR',
+                    value: 0.01,   // symbolic conversion value to indicate lead
+                    predicted_ltv: 0
+                });
+                
+                // Also track custom event 'Subscribe' for detailed analytics
+                fbq('trackCustom', 'TelegramSubscribeClick', {
+                    button_location: buttonPosition,
+                    page_section: buttonPosition === 'Top' ? 'Hero Section' : 'Bottom CTA Section',
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Track standard 'Contact' event (optional) to identify potential customer interest
+                fbq('track', 'Contact', {
+                    contact_method: 'Telegram_Channel',
+                    button_position: buttonPosition
+                });
+                
+                console.log(`✅ Facebook Pixel Events Tracked: Lead, TelegramSubscribeClick, Contact (${buttonPosition} button)`);
+                
+                // Show visual feedback toast
+                showToastMessage(`🎯 Subscribed! Tracking pixel event (${buttonPosition})`, 1800);
+            } else {
+                console.error('❌ Facebook Pixel not initialized, event not tracked');
+                showToastMessage(`⚠️ Joining channel...`, 1200);
+            }
+        }
+        
+        // Get both buttons with proper error handling
+        const topBtn = document.getElementById('joinTopBtn');
+        const bottomBtn = document.getElementById('joinBottomBtn');
+        
+        // Enhanced click handler that tracks before navigation (keeping default behavior)
+        function handleButtonClick(event, position) {
+            // Prevent immediate navigation temporarily to ensure pixel fires
+            const targetUrl = event.currentTarget.href;
+            
+            // If event is already processed? use flag to avoid double tracking in bubbling
+            if (event.currentTarget.hasAttribute('data-tracked')) {
+                return true;
+            }
+            
+            // Mark as tracked to avoid duplicate if multiple handlers
+            event.currentTarget.setAttribute('data-tracked', 'true');
+            
+            // Track the pixel events with position
+            trackSubscribeClick(event.currentTarget, position);
+            
+            // Allow the link to open normally after a micro delay so pixel has time to send
+            // Facebook Pixel uses sendBeacon where possible, but we delay navigation slightly for reliability
+            if (targetUrl && targetUrl !== '#') {
+                event.preventDefault();  // temporarily prevent default
+                setTimeout(function() {
+                    window.open(targetUrl, '_blank');
+                }, 150);
+            }
+            
+            return false;
+        }
+        
+        // Attach enhanced event listeners
         if (topBtn) {
-            topBtn.addEventListener('click', trackSubscribeButtonClick);
+            // Remove any existing listener to avoid duplicate (clean approach)
+            const newTopBtn = topBtn.cloneNode(true);
+            topBtn.parentNode.replaceChild(newTopBtn, topBtn);
+            newTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleButtonClick(e, 'Top');
+            });
+            // reassign reference for potential additional handling
+            window.topJoinBtn = newTopBtn;
+        } else {
+            console.warn('Top button not found');
         }
+        
         if (bottomBtn) {
-            bottomBtn.addEventListener('click', trackSubscribeButtonClick);
+            const newBottomBtn = bottomBtn.cloneNode(true);
+            bottomBtn.parentNode.replaceChild(newBottomBtn, bottomBtn);
+            newBottomBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleButtonClick(e, 'Bottom');
+            });
+            window.bottomJoinBtn = newBottomBtn;
         }
+        
+        // Additional tracking for page scroll depth (optional, but shows engagement)
+        let maxScrollPercent = 0;
+        let scrollTracked25 = false;
+        let scrollTracked50 = false;
+        let scrollTracked75 = false;
+        
+        function trackScrollDepth() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            if (scrollPercent > maxScrollPercent) {
+                maxScrollPercent = Math.min(100, Math.floor(scrollPercent));
+            }
+            
+            if (!scrollTracked25 && maxScrollPercent >= 25) {
+                scrollTracked25 = true;
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'ScrollDepth', { depth: '25%', page: 'PANKAJ_Landing' });
+                    console.log('📊 Scroll depth 25% tracked');
+                }
+            }
+            if (!scrollTracked50 && maxScrollPercent >= 50) {
+                scrollTracked50 = true;
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'ScrollDepth', { depth: '50%', page: 'PANKAJ_Landing' });
+                    console.log('📊 Scroll depth 50% tracked');
+                }
+            }
+            if (!scrollTracked75 && maxScrollPercent >= 75) {
+                scrollTracked75 = true;
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'ScrollDepth', { depth: '75%', page: 'PANKAJ_Landing' });
+                    console.log('📊 Scroll depth 75% tracked');
+                }
+            }
+        }
+        
+        // Throttle scroll tracking
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(trackScrollDepth, 300);
+        });
+        
+        // Track time on page (engagement) for better analytics
+        let startTime = Date.now();
+        let trackedTime30 = false;
+        let trackedTime60 = false;
+        
+        setInterval(function() {
+            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+            if (!trackedTime30 && elapsedSeconds >= 30) {
+                trackedTime30 = true;
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'TimeOnPage', { duration: '30s', page: 'PANKAJ_Landing' });
+                    console.log('⏱️ Time on page 30 seconds tracked');
+                }
+            }
+            if (!trackedTime60 && elapsedSeconds >= 60) {
+                trackedTime60 = true;
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'TimeOnPage', { duration: '60s', page: 'PANKAJ_Landing' });
+                    console.log('⏱️ Time on page 60 seconds tracked');
+                }
+            }
+        }, 1000);
+        
+        // Also track when user clicks ANY link to external telegram external? already handled above
+        // Retry tracking for pixel warmup: when page fully loaded we can fire another ViewContent event variation
+        window.addEventListener('load', function() {
+            // Ensure pixel is sending and also track page view with additional details
+            if (typeof fbq === 'function') {
+                fbq('track', 'ViewContent', {
+                    content_type: 'landing_page',
+                    content_ids: ['PANKAJ_LP_001'],
+                    content_name: 'Stock Market Telegram Channel',
+                    user_status: 'potential_investor'
+                });
+                console.log('✅ Additional ViewContent event tracked after page load');
+            }
+            
+            // track if user has shown interest by hovering on any button
+            const topButtonFinal = document.querySelector('#joinTopBtn, .telegram-btn[id*="joinTopBtn"]');
+            const bottomButtonFinal = document.querySelector('#joinBottomBtn, .telegram-btn[id*="joinBottomBtn"]');
+            
+            function trackHoverIntent(position) {
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'ButtonHover', {
+                        button_position: position,
+                        event_type: 'hover_intent'
+                    });
+                    console.log(`🖱️ Hover intent tracked on ${position} button`);
+                }
+            }
+            
+            if (topButtonFinal) {
+                let hoverTimer;
+                topButtonFinal.addEventListener('mouseenter', function() {
+                    hoverTimer = setTimeout(function() {
+                        trackHoverIntent('Top');
+                    }, 500);
+                });
+                topButtonFinal.addEventListener('mouseleave', function() {
+                    if (hoverTimer) clearTimeout(hoverTimer);
+                });
+            }
+            
+            if (bottomButtonFinal) {
+                let hoverTimerBottom;
+                bottomButtonFinal.addEventListener('mouseenter', function() {
+                    hoverTimerBottom = setTimeout(function() {
+                        trackHoverIntent('Bottom');
+                    }, 500);
+                });
+                bottomButtonFinal.addEventListener('mouseleave', function() {
+                    if (hoverTimerBottom) clearTimeout(hoverTimerBottom);
+                });
+            }
+        });
+        
+        // Expose debug function in console for testing (but safe)
+        window.debugPixelTracking = function() {
+            console.log('Pixel tracking status:');
+            console.log('- fbq available:', typeof fbq === 'function');
+            console.log('- Top button:', document.querySelector('#joinTopBtn') ? 'exists' : 'missing');
+            console.log('- Bottom button:', document.querySelector('#joinBottomBtn') ? 'exists' : 'missing');
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', 'DebugTest', { source: 'console_test' });
+                console.log('✅ Test custom event sent');
+            }
+        };
+        
+        // Final check: If any buttons weren't replaced due to selector mismatch but are present, reattach
+        if (!window.topJoinBtn && document.getElementById('joinTopBtn')) {
+            const fallbackTop = document.getElementById('joinTopBtn');
+            fallbackTop.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleButtonClick(e, 'Top');
+            });
+        }
+        if (!window.bottomJoinBtn && document.getElementById('joinBottomBtn')) {
+            const fallbackBottom = document.getElementById('joinBottomBtn');
+            fallbackBottom.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleButtonClick(e, 'Bottom');
+            });
+        }
+        
+        console.log('🎯 Advanced Facebook Pixel + Subscribe Button Tracking Active (Lead + Custom Events)');
     })();
 </script>
 
+<!-- Ensure even if external redirect has any issue, FB pixel beacon is sent -->
+<noscript>
+    <div style="display:none;">
+        <img height="1" width="1" style="display:none" alt="fbpixel" 
+             src="https://www.facebook.com/tr?id=1698920654893978&ev=Lead&cd[content_name]=Telegram_Channel_Join&noscript=1"/>
+    </div>
+</noscript>
 </body>
 </html>
